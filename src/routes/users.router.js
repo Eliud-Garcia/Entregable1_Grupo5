@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import {uploadUserAvatar} from '../middlewares/multer.middleware.js';
 
 const router = Router();
 
@@ -10,8 +11,11 @@ router.get('/:id', (req, res) => {
     res.send("detalles de un usuario");
 });
 
-router.post('/', (req, res) => {
-    res.send("crear un nuevo usuario");
+router.post('/', uploadUserAvatar.single('avatar'), (req, res) => {
+    res.status(201).json({
+        message: "usuario creado",
+        file: req.file.filename
+    });
 });
 
 router.put('/:id', (req, res) => {
